@@ -1,6 +1,4 @@
-object JewelHeroesScala {
-  println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
-  
+object jewels {
   /*
   	EN: Function that prints the table to the screen. Still need to add a way to skip lines.
   	ES: Función que escribe el tablero por pantalla. Todavía hay que añadir una forma de saltar
@@ -64,12 +62,16 @@ object JewelHeroesScala {
   	ES: Inserta valores aleatorios en el tablero. Falta comprobar el nivel de dificultad para
   	definir el rango de valores.
   */
-  def generarale(tablero:List[Int]):List[Int] =
+  def generarale(tablero:List[Int], dificultad:Int):List[Int] =
   {
   	if(tablero.isEmpty) return Nil
   	val rand = scala.util.Random
-  	(rand.nextInt(7)+1)::generarale(tablero.tail)
-  }                                               //> generarale: (tablero: List[Int])List[Int]
+  	dificultad match{
+  		case 1 => (rand.nextInt(3)+1)::generarale(tablero.tail, dificultad)
+  		case 2 => (rand.nextInt(4)+1)::generarale(tablero.tail, dificultad)
+  		case 3 => (rand.nextInt(7)+1)::generarale(tablero.tail, dificultad)
+  	}
+  }                                              //> generarale: (tablero: List[Int])List[Int]
   
   /*
   	EN: Exchanges the elements in two different spots of the table.
@@ -118,9 +120,22 @@ object JewelHeroesScala {
   			cambio(tablero, pos, pos-12)
   			borrar(tablero, pos+1, count-1)
   		}
-  }                                               //> borrar: (tablero: List[Int], pos: Int, count: Int)Boolean
-  
-  val lst:List[Int] = generarv(10)                //> lst  : List[Int] = List(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-  imprimir(generarale(lst))                       //> G	P	R	M	R	P	P	N	N	P	
-                                                  //| res0: Boolean = true
+  }
+  print("Bienvenido a Jewel Heroes.\nElige tu nivel de dificultad (1,2,3)")
+  val dificultad = Console.readInt()
+  dificultad match{
+    case 1 => {
+      val lst:List[Int] = generarv(10) //7x9
+      imprimir(generarale(lst,1))
+    }
+    case 2 => {
+      val lst:List[Int] = generarv(10) //11x17
+      imprimir(generarale(lst,2))
+    }
+    case 3 => {
+      val lst:List[Int] = generarv(10) //15x27
+      imprimir(generarale(lst,3))
+    }
+    case default => print("Se esperaba una dificultad entre 1 y 3. Vuelve a arrancar el juego.")
+  }
 }
