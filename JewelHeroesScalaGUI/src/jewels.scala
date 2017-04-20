@@ -1,4 +1,7 @@
 import java.io._;
+import javax.swing._
+import java.awt.Color
+import java.awt.GridLayout
 
 object jewels {
    
@@ -551,13 +554,67 @@ object jewels {
   	}
   }
   
+    
+  /*
+   EN: Function that creates the grid view of the game
+   ES: Función que crea la cuadrícula visual del juego
+   */
+  def crearGUI(ancho:Int, alto:Int): JFrame = {
+    val f = new JFrame("Jewel Heroes")
+    val grid = new GridLayout(ancho, alto)
+    f.setLayout(grid)
+    inicializarGUI(0,ancho*alto,f)
+    f.setSize(800, 800)
+    f.setVisible(true)
+    f
+  }
+  
+  /*
+    EN: Function initializing the grid view of the game with a blank grid
+    ES: Función que inicializa la cuadrícula del juego con una vista vacía
+   */
+  def inicializarGUI(pos:Int, hasta:Int, f:JFrame) {
+    if(pos<=hasta){
+      val sq = new JPanel()
+      f.add(sq)
+      inicializarGUI(pos+1,hasta,f)
+    }
+  }
+  
+  /*
+    EN: Function that updates the jewels' colours according to the current game status
+    ES: Función que actualiza los colores de las jewels de acuerdo al estado del juego
+   */
+  def actualizarGUI(tablero:List[Int], pos:Int, f:JFrame) {
+    if(!tablero.isEmpty){
+      f.remove(pos)
+      val sq = new JPanel()
+      tablero.head match {
+        case 1 => sq.setBackground(Color.blue)
+        case 2 => sq.setBackground(Color.red)
+        case 3 => sq.setBackground(Color.orange)
+        case 4 => sq.setBackground(Color.green)
+        case 5 => sq.setBackground(Color.gray)
+        case 6 => sq.setBackground(Color.magenta)
+        case 7 => sq.setBackground(Color.darkGray)
+        case 8 => sq.setBackground(Color.white)
+      }
+      f.add(sq,pos)
+      actualizarGUI(tablero.tail, pos+1, f)
+    }
+    else {
+      f.validate()
+      f.repaint()
+    }
+  }
+  
   /*
   	EN: Main game loop. Makes as many eliminations as possible, then proceeds to save the game state,
   	determine the next move and execute it.
   	ES: Bucle principal de juego. Realiza tantas eliminaciones como sea posible, y a continuación
   	procede a guardar el estado del juego, determinar el siguiente movimiento y ejecutarlo.
   */
-  def bucle(tablero:List[Int],dificultad:Int,automatico:Int):Boolean=
+  def bucle(tablero:List[Int],dificultad:Int,automatico:Int, gui: JFrame):Boolean=
   {
   	eliminarPosibles(tablero,false,dificultad)
   	eliminarPosibles(tablero,true,dificultad)
@@ -571,23 +628,27 @@ object jewels {
 	  				case 0 =>{
 	  				 val nuevoTablero = cambio(tablero,mov._1,mov._1-7)
 	  				 print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  				 actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				 }
 	  				case 1 =>{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+7)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 2 =>
 	  				{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1-1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 3 => {
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  			}
 	  			}
@@ -603,23 +664,27 @@ object jewels {
 	  				case 0 =>{
 	  				 val nuevoTablero = cambio(tablero,mov._1,mov._1-7)
 	  				 print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  				 actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				 }
 	  				case 1 =>{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+7)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 2 =>
 	  				{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1-1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 3 => {
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  			}
 	  		}
@@ -629,23 +694,27 @@ object jewels {
 	  				case 0 =>{
 	  				 val nuevoTablero = cambio(tablero,mov._1,mov._1-11)
 	  				 print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  				 actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				 }
 	  				case 1 =>{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+11)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 2 =>
 	  				{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1-1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 3 => {
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  			}
 	  			}
@@ -661,23 +730,27 @@ object jewels {
 	  				case 0 =>{
 	  				 val nuevoTablero = cambio(tablero,mov._1,mov._1-11)
 	  				 print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  				 actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				 }
 	  				case 1 =>{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+11)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 2 =>
 	  				{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1-1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 3 => {
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  			}
 	  		}
@@ -687,23 +760,27 @@ object jewels {
 	  				case 0 =>{
 	  				 val nuevoTablero = cambio(tablero,mov._1,mov._1-15)
 	  				 print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  				 actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				 }
 	  				case 1 =>{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+15)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 2 =>
 	  				{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1-1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 3 => {
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  			}
 	  			}
@@ -719,23 +796,27 @@ object jewels {
 	  				case 0 =>{
 	  				 val nuevoTablero = cambio(tablero,mov._1,mov._1-15)
 	  				 print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  				 actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				 }
 	  				case 1 =>{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+15)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 2 =>
 	  				{
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1-1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  				case 3 => {
 	  					val nuevoTablero = cambio(tablero,mov._1,mov._1+1)
 	  					print(nuevoTablero, dificultad, 0)
-	  				 bucle(nuevoTablero,dificultad,automatico)
+	  					actualizarGUI(nuevoTablero,0,gui)
+	  				 bucle(nuevoTablero,dificultad,automatico,gui)
 	  				}
 	  			}
 	  		}
@@ -759,7 +840,7 @@ object jewels {
   */
   def init()=
   {
-  	println("Bienvenido a Jewels Hero.\nSeleccione lo que quiere hacer:\n\t1.Nueva partida\n\t2.Cargar partida")
+    println("Bienvenido a Jewels Hero.\nSeleccione lo que quiere hacer:\n\t1.Nueva partida\n\t2.Cargar partida")
   	val opcion = readInt()
   	opcion match
   	{
@@ -770,23 +851,39 @@ object jewels {
 			    case 1 => {
 			      val lst:List[Int] = generarv(7*9) //7x9
 			      val tablero = generarale(lst,dificultad)
-			      bucle(tablero,dificultad,esAutomatico())
+			      val gui = crearGUI(7,9)
+			      bucle(tablero,dificultad,esAutomatico(),gui)
 			    }
 			    case 2 => {
 			      val lst:List[Int] = generarv(11*17) //11x17
 			      val tablero = generarale(lst,dificultad)
-			      bucle(tablero,dificultad,esAutomatico())
+			      val gui = crearGUI(11,17)
+			      bucle(tablero,dificultad,esAutomatico(),gui)
 			    }
 			    case 3 => {
 			      val lst:List[Int] = generarv(15*27) //15x27
 			      val tablero = generarale(lst,dificultad)
-			      bucle(tablero,dificultad,esAutomatico())
+			      val gui = crearGUI(15,27)
+			      bucle(tablero,dificultad,esAutomatico(),gui)
 			    }
 			    case default => print("Se esperaba una dificultad entre 1 y 3. Vuelve a arrancar el juego.")
 			  }
   		case 2 => {
   			val estado = cargar("save.dat")
-  			bucle(estado._1,estado._2,estado._3)
+  			estado._2 match {
+  			  case 1 => {
+  			    val gui = crearGUI(7,9)
+  			    bucle(estado._1,estado._2,estado._3, gui)
+  			  }
+  			  case 2 => {
+  			    val gui = crearGUI(11,17)
+  			    bucle(estado._1,estado._2,estado._3, gui)
+  			  }
+  			  case 3 => {
+  			    val gui = crearGUI(15,27)
+  			    bucle(estado._1,estado._2,estado._3, gui)
+  			  }
+  			}
   		}
   	}
   }
