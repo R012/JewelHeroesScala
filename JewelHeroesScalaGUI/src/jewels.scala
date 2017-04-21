@@ -887,4 +887,6 @@ object jewels {
   		}
   	}
   }
+  
+  init()
 }
