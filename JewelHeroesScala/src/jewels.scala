@@ -56,6 +56,7 @@ object jewels {
   */
   def poner(tablero:List[Int], color:Int, posicion:Int) :List[Int] =
 	{
+    if(tablero.isEmpty) Nil
 		posicion match{
 			case 0 => color::tablero.tail
   		case posicion => tablero.head::poner(tablero.tail, color, posicion - 1)
@@ -66,7 +67,10 @@ object jewels {
 		EN: Reads the element located in a specific location of the table.
 		ES: Lee el elemento ubicado en una posición específica del tablero.
 	*/
-	def leer(tablero:List[Int], pos:Int):Int = pos match
+	def leer(tablero:List[Int], pos:Int):Int = 
+	  if(tablero.isEmpty) -1
+	  else
+	  pos match
 	{
 		case 0 => tablero.head
 		case pos => leer(tablero.tail, pos-1)
