@@ -306,14 +306,14 @@ object jewels {
 				{
 					if(inicio > 7)
 					{
-						if(leer(tablero,inicio-ancho) == color) (inicio-7,1,longitud+1)
-						else if(inicio/ancho < 9)
-						 	if(leer(tablero,inicio+ancho) == color) (inicio+7,0,longitud+1)
+						if(leer(tablero,inicio-7) == color) (inicio-7,1,longitud+1)
+						else if(inicio/7 < 9)
+						 	if(leer(tablero,inicio+7) == color) (inicio+7,0,longitud+1)
 						 	else(-1,-1,-1)
 						else(-1,-1,-1)
 					}
-					else if(inicio/7 < 11)
-						 	if(leer(tablero,inicio+ancho) == color) (inicio+7,0,longitud+1)
+					else if(inicio/7 < 9)
+						 	if(leer(tablero,inicio+7) == color) (inicio+7,0,longitud+1)
 						 	else(-1,-1,-1)
 						else(-1,-1,-1)
 				}
@@ -322,12 +322,12 @@ object jewels {
 					if(inicio/7 > 0)
 					{
 						if(leer(tablero,inicio-1) == color) (inicio-1,3,longitud+1)
-						else if(inicio/alto < 7)
+						else if(inicio/9 < 7)
 						 	if(leer(tablero,inicio+1) == color) (inicio+1,2,longitud+1)
 						 	else(-1,-1,-1)
 						else(-1,-1,-1)
 					}
-					else if(inicio/11 < 7)
+					else if(inicio/9 < 7)
 						 	if(leer(tablero,inicio+1) == color) (inicio+1,2,longitud+1)
 						 	else(-1,-1,-1)
 						else(-1,-1,-1)
@@ -339,15 +339,15 @@ object jewels {
 	  		{
 	  			if(color!=0)
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+7,1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+7,1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  			else
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+7,1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+7,1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
@@ -356,21 +356,22 @@ object jewels {
 	  		{
 	  			if(color!=0)
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+7,longitud+1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+7,longitud+1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  			else
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+7,longitud+1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+7,longitud+1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  		}
 	  		}
-	  	case 2=>case 1 =>{
+  }
+	  	case 2=>{
 	  	if(leer(tablero,inicio) != color)
 			{
 				if(!col)
@@ -410,15 +411,15 @@ object jewels {
 	  		{
 	  			if(color!=0)
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+11,1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+11,1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  			else
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+11,1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+11,1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
@@ -427,20 +428,20 @@ object jewels {
 	  		{
 	  			if(color!=0)
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+11,longitud+1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+11,longitud+1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  			else
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+11,longitud+1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+11,longitud+1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  		}
-	  		}
+	  		}}
 	  		case 3 =>{
 	  	if(leer(tablero,inicio) != color)
 			{
@@ -481,15 +482,15 @@ object jewels {
 	  		{
 	  			if(color!=0)
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+15,1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+15,1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  			else
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+15,1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,longitud+1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+15,1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
@@ -498,15 +499,15 @@ object jewels {
 	  		{
 	  			if(color!=0)
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+15,longitud+1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+15,longitud+1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
 	  			else
 	  				{
-	  					val hor = buscarMejor(tablero,inicio+1,1,color,false)
-	  					val ver = buscarMejor(tablero,inicio+15,longitud+1,color,true)
+	  					val hor = buscarMejor(tablero,inicio+1,1,color,false, dificultad)
+	  					val ver = buscarMejor(tablero,inicio+15,longitud+1,color,true, dificultad)
 	  					if(hor._2 > ver._2) hor
 	  					else ver
 	  					}
