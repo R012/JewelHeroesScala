@@ -1,8 +1,65 @@
+import javax.swing._
+import java.awt.Color
+import java.awt.GridLayout
 import util.Random
 import java.io._
 import scala.io.Source
+
 object jewels extends App {
   
+    var gui : JFrame = new JFrame()
+	  /*
+   EN: Function that creates the grid view of the game
+   ES: Función que crea la cuadrícula visual del juego
+   */
+  def crearGUI(ancho:Int, alto:Int): JFrame = {
+    val f = new JFrame("Jewel Heroes")
+    val grid = new GridLayout(ancho, alto)
+    f.setLayout(grid)
+    inicializarGUI(0,ancho*alto,f)
+    f.setSize(800, 800)
+    f.setVisible(true)
+    f
+  }
+  
+  /*
+    EN: Function initializing the grid view of the game with a blank grid
+    ES: Función que inicializa la cuadrícula del juego con una vista vacía
+   */
+  def inicializarGUI(pos:Int, hasta:Int, f:JFrame) {
+    if(pos<=hasta){
+      val sq = new JPanel()
+      f.add(sq)
+      inicializarGUI(pos+1,hasta,f)
+    }
+  }
+  
+  /*
+    EN: Function that updates the jewels' colours according to the current game status
+    ES: Función que actualiza los colores de las jewels de acuerdo al estado del juego
+   */
+  def actualizarGUI(tablero:List[Int], pos:Int, f:JFrame) {
+    if(!tablero.isEmpty){
+    val root = f.getContentPane
+      val sq = root.getComponent(pos)
+      tablero.head match {
+        case 1 => sq.setBackground(Color.blue)
+        case 2 => sq.setBackground(Color.red)
+        case 3 => sq.setBackground(Color.orange)
+        case 4 => sq.setBackground(Color.green)
+        case 5 => sq.setBackground(Color.gray)
+        case 6 => sq.setBackground(Color.magenta)
+        case 7 => sq.setBackground(Color.darkGray)
+        case 8 => sq.setBackground(Color.white)
+      }
+      actualizarGUI(tablero.tail, pos+1, f)
+    }
+    else {
+      f.validate()
+      f.repaint()
+    }
+  }
+	
   //Imprime por pantalla el contenido de cualquier iterable
   def printList(args:List[Int]):Unit = {
       args.foreach(println)
@@ -318,6 +375,7 @@ object jewels extends App {
 	  println("\t- Puntuación:\t" + score)
 	  println("\t- Numero de conjuntos eliminados:\t" + sets)
 	  printTable(table,0,height-1,width,height)
+	  actualizarGUI(table,0,gui)
 	  println("________________________________")
 	  
 	  selection match {
@@ -384,14 +442,17 @@ object jewels extends App {
 	difficulty match {
 	  case 1 => {
 	    val table = initTable(7*9,difficulty)
+	    gui = crearGUI(7,9)
 	    gameLoop(table, 7, 9, difficulty,selection,0,0)
 	  }
 	  case 2 =>{
 	    val table = initTable(11*17,difficulty)
+	    gui = crearGUI(11,17)
 	    gameLoop(table, 11, 17, difficulty,selection,0,0)
 	  }
 	  case 3 =>{
 	    val table = initTable(15*27,difficulty)
+	    gui = crearGUI(15,27)
 	    gameLoop(table, 15, 27, difficulty,selection,0,0)
 	  }
 	  case _ => System.exit(-2)
